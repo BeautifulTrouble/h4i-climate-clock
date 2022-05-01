@@ -1,9 +1,15 @@
+import { compressToEncodedURIComponent } from 'lz-string'
 import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 
 import { ModuleResInterface } from '../../interfaces'
+import { UpdateSettings } from '../../routing/UpdateSettings'
+import { UpdateURL } from '../../routing/UpdateURL'
 import {
+  COMPRESSED_KEY,
   ERROR_MSG,
+  LANGUAGE_LOCAL_STORAGE_KEY,
   LIFELINES_LOCAL_STORAGE_KEY,
   URL,
 } from '../../utils/constants'
@@ -51,6 +57,7 @@ const LifelineCreationForm = () => {
   const [lifelineModules, setLifelineModules] = useState<ModuleResInterface[]>(
     [],
   )
+  const navigate = useNavigate()
 
   useEffect(() => {
     getData(
@@ -61,7 +68,9 @@ const LifelineCreationForm = () => {
       setModules,
       setLifelineModules,
     )
-  }, [])
+    UpdateURL(navigate, null, setLifelineModules)
+    UpdateSettings(null, setLifelineModules)
+  }, [navigate, setLifelineModules])
 
   /* clearProperties
    *
@@ -81,6 +90,15 @@ const LifelineCreationForm = () => {
    */
   const formSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+    const json = {
+      language: localStorage.getItem(LANGUAGE_LOCAL_STORAGE_KEY),
+      lifelines: lifelineModules,
+    }
+    const settings_json = JSON.stringify(json)
+    const compressed = compressToEncodedURIComponent(settings_json)
+
+    localStorage.setItem(COMPRESSED_KEY, compressed)
+    navigate(`${compressed}`)
     const llModule: ModuleResInterface = {
       labels: [title.toUpperCase()] /* stored as array in API response */,
       flavor,
