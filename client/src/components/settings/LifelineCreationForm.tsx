@@ -35,6 +35,24 @@ const StyledLifeline = styled.div`
     font-size: 14px;
   }
 `
+
+const StyledHeading = styled.h1`
+  color: ${({ theme }) => theme.navy} !important;
+  margin: 0px;
+`
+
+const StyledSubheading = styled.h2`
+  font-weight: lighter;
+  font-size: 1.3rem;
+  margin: 0px;
+  margin-top: 14px;
+`
+
+const StyledDescription = styled.p`
+  margin-top: 5px;
+  font-weight: lighter;
+`
+
 const FormatSpacing = styled.div`
   max-width: 1090px;
   margin: 57px;
@@ -108,7 +126,10 @@ const LifelineCreationForm = () => {
       <NavBar handle={handle} isFullScreen={true} atHome={false}></NavBar>
       <FormatSpacing>
         <StyledLifeline>
-          <h1>Clock Lifelines</h1>
+          <StyledHeading>Clock Lifelines</StyledHeading>
+          <StyledSubheading>
+            Add a Lifeline to your existing clock
+          </StyledSubheading>
           <form onSubmit={formSubmit}>
             {/* title input */}
             <label>Title</label>
@@ -165,11 +186,11 @@ const LifelineCreationForm = () => {
 
             <button type="submit">Create</button>
           </form>
-          <h3>Displayed Lifelines</h3>
-          <p>
+          <StyledSubheading>Displayed Lifelines</StyledSubheading>
+          <StyledDescription>
             Drag a Lifeline here to display it. Up to three Lifelines can be
             shown on the clock.
-          </p>
+          </StyledDescription>
 
           {/* <button type="submit">Create</button>
       </form> */}
@@ -179,7 +200,6 @@ const LifelineCreationForm = () => {
           />
           <DraggableLifelines lifelinesProp={lifelineModules} />
           {/* <DraggableLifelines lifelinesProp={lifelineModules} /> */}
-          <h3>Hidden Lifelines</h3>
         </StyledLifeline>
       </FormatSpacing>
     </>
